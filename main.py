@@ -7,9 +7,9 @@ from google import genai
 client = genai.Client(api_key=api_key)
 from google.genai import types
 
-if len(sys.argv) == 1:
-    print("Error: expecting prompt")
-    exit(1)
+#if len(sys.argv) == 1:
+#    print("Error: expecting prompt")
+#    exit(1)
 
 if len(sys.argv) > 2 and sys.argv[2] != "--verbose":
     print("Error: too many arguments.")
