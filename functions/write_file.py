@@ -1,5 +1,9 @@
 import os
 
+from google import genai
+
+from google.genai import types
+
 def write_file(working_directory, file_path, content):
     
     abs_file_path = os.path.abspath(os.path.join(working_directory, file_path))
@@ -9,13 +13,6 @@ def write_file(working_directory, file_path, content):
         return(f'Error: Cannot write to "{file_path}" as it is outside the permitted working directory')
     
     try:
-#        if os.path.dirname(abs_file_path) == '':
-#            with open(abs_file_path, "w") as f: f.write(content)
-#        elif os.path.exists(os.path.dirname(abs_file_path)) == False:
-#            os.makedirs(os.path.dirname(abs_file_path))
-#            with open(abs_file_path, "w") as f: f.write(content)
-#        else:
-#            with open(abs_file_path, "w") as f: f.write(content)
         dir_name = os.path.dirname(abs_file_path)
         if dir_name:
             os.makedirs(dir_name, exist_ok=True)
@@ -26,3 +23,25 @@ def write_file(working_directory, file_path, content):
     except Exception as e:
         return(f"Error: {e}")
 
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Write or overwrite a text file.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "working_directory": types.Schema(
+                type=types.Type.STRING,
+                description="The working directory where the file should be written.",
+            ),
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The relative path (from the working directory) of the file to write.",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="The content to write to the file.",
+            ),
+        },
+        required=["working_directory", "file_path", "content"],
+    ),
+)
